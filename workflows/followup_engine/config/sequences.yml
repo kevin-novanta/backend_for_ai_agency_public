@@ -1,0 +1,74 @@
+sequences:
+  opener_followups:
+    description: "Up to 6 follow-ups after opener; varied intent"
+    steps:
+      - id: f1
+        type: send_email
+        mode: static
+        subject: "Quick nudge on this?"
+        template: "followup_1"
+      - id: f1_wait
+        type: wait_until
+        delay: { days: 2 }
+
+      - id: f2
+        type: send_email
+        mode: static
+        subject: "60‑sec loom for you?"
+        template: "followup_2"
+      - id: f2_wait
+        type: wait_until
+        delay: { days: 3 }
+
+      - id: f3
+        type: send_email
+        mode: llm
+        subject: "A quick win I spotted"
+        template: "followup_3_llm"
+        llm:
+          temperature: 0.3
+          max_tokens: 220
+          style: "concise, friendly, expert"
+          constraints: { one_paragraph: true, csv_safe: true, avoid_links: true }
+      - id: f3_wait
+        type: wait_until
+        delay: { days: 2 }
+
+      - id: f4
+        type: send_email
+        mode: llm
+        subject: "If timing/resources are tight…"
+        template: "followup_4_llm"
+        llm:
+          temperature: 0.3
+          max_tokens: 220
+          style: "empathetic, practical, concise"
+          constraints: { one_paragraph: true, csv_safe: true, avoid_links: true }
+      - id: f4_wait
+        type: wait_until
+        delay: { days: 3 }
+
+      - id: f5
+        type: send_email
+        mode: llm
+        subject: "Close the loop or quick plan?"
+        template: "followup_5_llm"
+        llm:
+          temperature: 0.3
+          max_tokens: 220
+          style: "direct, respectful, concise"
+          constraints: { one_paragraph: true, csv_safe: true, avoid_links: true }
+      - id: f5_wait
+        type: wait_until
+        delay: { days: 5 }
+
+      - id: f6
+        type: send_email
+        mode: llm
+        subject: "Happy to close this out (or intro?)"
+        template: "followup_6_llm"
+        llm:
+          temperature: 0.25
+          max_tokens: 220
+          style: "polite, concise, minimal"
+          constraints: { one_paragraph: true, csv_safe: true, avoid_links: true }

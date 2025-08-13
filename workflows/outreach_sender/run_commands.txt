@@ -1,0 +1,11 @@
+Run "Prompt_runner":
+python3 -m workflows.outreach_sender.Email_Scripts.prompt_runner
+
+Run "sequence_runner" in virtual environment:
+cd /Users/kevinnovanta/backend_for_ai_agency
+source .venv/bin/activate
+python -m workflows.outreach_sender.sequence_runner
+
+Run "sequence_runner": 
+cd /Users/kevinnovanta/backend_for_ai_agency
+python3 -m workflows.outreach_sender.sequence_runner

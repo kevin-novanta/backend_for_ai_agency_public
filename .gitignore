@@ -1,0 +1,59 @@
+# ---- OS & IDE ----
+.DS_Store
+.Spotlight-V100
+.Trashes
+.vscode/
+.idea/
+
+# ---- Python ----
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# ---- Env / Secrets ----
+*.env
+creds/
+Creds/
+
+# ---- Logs ----
+logs/
+*.log
+sync_output.log
+Restart_CRM_sync.sh
+restart.commands.txt
+restart_registry_sync.sh
+
+# ---- Builds ----
+build/
+dist/
+
+# ---- Data exports (keep out of public snapshot) ----
+*.sqlite3
+*.db
+*.csv
+
+data/
+Debugging/
+Documentation_Videos/
+
+# ---- Private code paths to exclude from public snapshot ----
+api/
+database/
+integrations/
+workflows/Google_Sheets/
+workflows/Logging/
+workflows/lead_scraper/
+workflows/linkedin/
+workflows/followup_engine/Utils/
+workflows/followup_engine/listeners/
+workflows/outreach_sender/Utils/
+workflows/outreach_sender/Email_Scripts/email_send_tracking.json
+
+# ---- Helper scripts ----
+# Keep the main publisher tracked, ignore the commands helper file
+!/publish_all.sh
+publish_all_commands.txt
