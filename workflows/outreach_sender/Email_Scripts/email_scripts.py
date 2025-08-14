@@ -96,55 +96,6 @@ From minimum wage hikes to new payments reporting (e.g., 1099-K thresholds) and 
 - 1–2 short paragraphs + a one‑line CTA
 """
 
-# 📝 Follow-Up Email Template Prompt
-follow_up_prompt_template = """
-Write a friendly follow-up email to a lead who received our initial outreach but hasn't replied yet. The email should:
-
-- Reference the previous message briefly (no pressure)
-- Mention one new benefit or update (e.g., improved automation, new case study, faster onboarding)
-- Invite them to a free 20–25 min discovery call to discuss tailored workflow solutions
-- Keep it warm, concise, and specific to their business context
-
-# Company Name:
-{company_name}
-
-# Industry / Category:
-{industry_info}
-
-# Business Summary / Pains:
-{offer_summary}
-
-# Requirements:
-- 60–90 words
-- End with a soft CTA ("open to a quick chat?")
-- Mention Outbound Accelerator once.
-"""
-
-# 📝 Reengagement Email Template Prompt
-reengagement_prompt_template = """
-Write a re‑engagement email for a lead who previously showed interest but didn’t book. The email should:
-
-- Acknowledge prior convo briefly (no guilt)
-- Highlight one improvement since then (e.g., tighter lead routing, smarter follow-ups, clearer dashboard)
-- Offer a free 15–20 min discovery call or a 1‑page blueprint recap
-- Stay warm, low‑pressure, and specific to their context
-
-# Company Name:
-{company_name}
-
-# Industry / Category:
-{industry_info}
-
-# Business Summary / Pains:
-{offer_summary}
-
-# Requirements:
-- 70–100 words
-- End with a soft question ("want me to send the 1‑pager?")
-- Mention Outbound Accelerator once.
-"""
-
-
 def load_leads_from_csv(csv_path):
     return pd.read_csv(csv_path)
 
@@ -157,18 +108,5 @@ def get_opener_prompt(row):
     # Remove any text in square brackets, including the brackets themselves
     return re.sub(r'\[.*?\]', '', result)
 
-def get_follow_up_prompt(row):
-    result = follow_up_prompt_template.format(
-        company_name=row['Lead Name'],
-        industry_info=row['Industry'] if 'Industry' in row else row['Offer Type'],
-        offer_summary=row['Main Pain Points']
-    )
-    return re.sub(r'\[.*?\]', '', result)
 
-def get_reengagement_prompt(row):
-    result = reengagement_prompt_template.format(
-        company_name=row['Lead Name'],
-        industry_info=row['Industry'] if 'Industry' in row else row['Offer Type'],
-        offer_summary=row['Main Pain Points']
-    )
     return re.sub(r'\[.*?\]', '', result)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Dict, Any
 import hashlib
+from datetime import datetime, UTC
 
 from workflows.followup_engine.utils import crm
 from workflows.followup_engine.utils import logger
@@ -57,17 +58,17 @@ class SendEmailStep:
             logger.warn("send_email: missing lead identifier; skipping.")
             return {"status": "skip", "notes": "no-lead-id"}
 
-        # Enforce allowed send window / daily limits
+        # Enforce allowed send window / daily limits (fail-closed in all modes)
         try:
-            from workflows.followup_engine.utils.send_window import check_send_window
+            from workflows.followup_engine.utils.send_window_status import check_send_window
             sender_inbox = lead.get("Sender") or None  # optional inbox field
             allowed, reason = check_send_window(inbox=sender_inbox, dry_run=dry_run)
             if not allowed:
                 logger.info(f"⏸️  Outside allowed send window ({reason}); skipping {lead_id}.")
                 return {"status": "skip", "notes": f"send-window:{reason}"}
         except Exception as e:
-            # Fail-open: controls missing or error — log and proceed
-            logger.warn(f"send_window check failed ({e}); proceeding by default.")
+            logger.error(f"send_window check error ({e}); skipping {lead_id}.")
+            return {"status": "skip", "notes": "send-window:error"}
 
         # Choose template mode
         subject_for_send = self.subject
@@ -110,13 +111,11 @@ class SendEmailStep:
             # TODO: integrate real mail client here
             logger.info(f"Sent '{subject_for_send}' → {lead_id}")
             st.mark_sent(lead_id, sequence_id, self.step_id, idem)
+            # Only stamp the send time; Follow-Up Stage is set by the runner before send
             crm.update_fields(
                 lead_id,
                 {
-                    "Follow-Up Stage": f"Follow Up {self.step_id.upper()} Sent"
-                    if self.step_id.startswith("f")
-                    else "Follow Up Sent",
-                    "Responded?": "No",
+                    "Last Message Sent Timestamp": datetime.now(UTC).isoformat(),
                 },
             )
 

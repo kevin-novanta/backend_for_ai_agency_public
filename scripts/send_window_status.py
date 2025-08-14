@@ -25,7 +25,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from workflows.followup_engine.utils.send_window import (  # type: ignore
+from workflows.followup_engine.utils.send_window_status import (  # type: ignore
     check_send_window,
     CONTROLS_PATH,
     COUNTERS_PATH,
